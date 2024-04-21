@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block 'head' %}
+    <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+{% endblock 'head' %}
+
+{% block 'body' %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md d-flex justify-content-center">
+                <div class="register-cont">
+                    <br>
+                    <br>
+                    <section class="cont-logo">
+                        <img class="logo" src="{% static '/general/images/logo.png' %}" alt="logo">
+                        <label class="text-logo">HEALING</label>
+                    </section>
+                    <hr>
+                    <form action="{% url 'signup' %}" method="POST">
+                        {% csrf_token %}
+                        <h2 class="highlight-text">Sign Up</h2>
+                        {% if messages %}
+                        <br>
+                            {% for message in messages %}
+                            <section class="alert {{message.tags}}">
+                                {{message}}
+                            </section>
+                            {% endfor %}
+                        {% endif %}
+                        <label for="">Username</label>
+                        <input type="text" name="username" id="" class="form-control" placeholder="Username ...">
+                        <br>
+                        <label for="">E-mail</label>
+                        <input type="text" name="email" id="" placeholder="email@email.com" class="form-control">
+                        <br>
+                        <div class="row">
+                            <div class="col-md">
+                                <label for="">Password</label>
+                                <input type="password" name="password" class="form-control" placeholder="Insert password ...">
+                            </div>
+                            <div class="col-md">
+                                <label for="">Confirm Password</label>
+                                <input type="password" name="confirm_password" class="form-control" placeholder="Confirm password ..." id="">
+                            </div>
+                        </div>
+                        <br>
+
+                        <input type="submit" value="Sign Up" class="btn btn-success btn-dark-color">
+                        <a href="{% url 'login' %}" class="btn btn-dark-color-outline">Already have an account?</a>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md bg-main d-flex justify-content-center align-items-center">
+                <img src="{% static '/users/images/ilustration.png' %}" alt="ilustration">
+            </div>
+        </div>
+    </div>
+
+
+{% endblock 'body' %}
+

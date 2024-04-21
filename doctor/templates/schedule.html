@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block 'head' %}
+    <link rel="stylesheet" href="{% static 'doctors/css/schedule.css' %}">
+    <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+    <link rel="stylesheet" href="{% static 'doctors/css/doctor_registration.css' %}">
+{% endblock 'head' %}
+
+
+{% block 'body' %}
+
+{% include "partials/navbar.html" %}
+
+    <div class="container">
+
+        <br><br>
+
+        <div class="row">
+            <div class="col-md-8">
+
+                <img src="{{ doctor_info.profile_photo.url }}"  class="profile-photo" alt="">
+                <label style="margin-left: 30px; font-size: 25px" class="p-bold">Hello, <span class="color-dark">{{request.user.username}}</span></label>
+                
+                <br>
+                {% if messages %}
+                    <br>
+                    {% for message in messages %}
+                        <section class="alert {{message.tags}}">
+                            {{message}}
+                        </section>
+                    {% endfor %}
+                {% endif %}
+                <br>
+                <p style="font-size: 25px" class="p-bold">Open a schedule</p>
+                <hr>
+                <form action="{% url 'schedule' %}" method="POST">
+                    {% csrf_token %}
+                    <label for="">Choose date:</label>
+                    <input type="datetime-local" name="date" class="form-control shadow-main-color">
+                    <br>
+                    <input type="submit" value="Save" class="btn btn-success btn-dark-color">
+                </form>
+            </div>
+            <div class="col-md-4">
+                <p style="font-size: 25px" class="p-bold">Your Availability:</p>
+                <ul class="list-group">
+                    {% for date in schedule  %}
+                        <li class="list-group-item">{{date}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+{% endblock 'body' %}

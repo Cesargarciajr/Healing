@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block 'head' %}
+
+    <link rel="stylesheet" href="{% static 'doctors/css/schedule.css' %}">
+    <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+    <link rel="stylesheet" href="{% static 'doctors/css/doctor_registration.css' %}">
+    <link rel="stylesheet" href="{% static 'patients/css/home.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+{% endblock 'head' %}
+
+{% block 'body' %}
+    {% include "partials/navbar.html" %}
+
+    <br><br>
+    <div class="container">
+        {% if appointment.status == 'C' %}
+            <div class="alert alert-danger" role="alert">
+                Appointment Cancelled
+            </div>
+        {% elif appointment.status == 'F' %}
+            <div class="alert alert-success" role="alert">
+                Appointment Finished
+            </div>
+        {% elif appointment.status == 'S' %}
+            <div class="alert alert-primary" role="alert">
+                Doctor is online. Start Call immediately!
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-3"><img src="{{doctor_info.profile_photo.url}}" class="profile-photo-card-lg" alt=""></div>
+                    <div class="col-md">
+                        <p style="font-size: 20px" class="p-bold">Dr {{doctor_info.name}} <i class="bi bi-patch-check-fill icon-main"></i></p>
+                        <p>{{doctor_info.description}}</p>
+                        <p class="p-bold">{{appointment.schedule.date}}</p>
+                    </div>
+                </div> 
+                <hr>
+                <br>
+                <div class="row">
+                    <div class="col-md">
+                        
+                        <p><i class="color-dark bi bi-check-circle-fill"></i> Booked</p>
+                    </div>
+                    <div class="col-md">
+                        <p><i class="{% if appointment.status == 'F' %} color-dark {% endif %} bi bi-check-circle-fill"></i> Finished</p>
+                    </div>
+                    <div class="col-md">
+                        <p><i class="bi bi-check-circle-fill"></i> Reviewed</p>
+                    </div>
+                </div>
+                <hr>
+                <h3 class="p-bold">Appointment Details</h3>
+                <p style="font-size:20px"><i class="bi bi-calendar3 color-dark"></i>&nbsp {{appointment.schedule.date}}</p>
+                <p style="font-size:20px"><i class="bi bi-tag-fill color-dark"></i></i>&nbsp {{doctor_info.price}} €</p>
+                <a style="cursor: auto;" class="btn btn-dark-color-outline btn-lg">Add to your calendar</a>
+                <hr>
+                <h3 class="p-bold">How to Start ?</h3>
+                <p>At the time of your appointment, access the link below</p>
+
+                {% if appointment.status == 'S' and appointment.link %}
+                    <a href="{{appointment.link}}"  class="btn btn-success btn-dark-color btn-lg" >Start Call</a>
+                {% else %}
+
+                    <a href="#"  class="btn btn-success btn-dark-color btn-lg disabled" >Start Call</a>
+
+                {% endif %}               
+                <hr>
+                <h3 class="p-bold">My Documents</h3>
+                <br>
+                {% for  document in documents %}
+                    <a href="{{document.document.url}}" class="link documents">
+                        <i class="bi bi-file-arrow-down"></i> {{document.title}} - {{document.appointment.schedule.date.year}}
+                    </a>
+                    <br>
+                    <br>
+                    <br>
+                {% endfor %}
+            </div>
+            <div class="col-md"></div>
+        </div>
+        
+    </div>
+
+{% endblock 'body' %}

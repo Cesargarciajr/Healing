@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block 'head' %}
+    <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+    <link rel="stylesheet" href="{% static 'doctors/css/doctor_registration.css' %}">
+{% endblock 'head' %}
+
+{% block 'body' %}
+
+{% include "partials/navbar.html" %}
+
+<div class="container">
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-md-8">
+            
+            <p class="p-bold">Hello, <span class="color-dark">{{request.user.username}}</span><span class="color-dark"></span></p>
+            <p class="p-bold">Let's do your Legal Doctor Registration</p>
+            {% if messages %}
+                <br>
+                {% for message in messages %}
+                    <section class="alert {{message.tags}}">
+                        {{message}}
+                    </section>
+                {% endfor %}
+            {% endif %}
+            <br>
+            <form action="{% url 'doctor_registration' %}" method="post" enctype='multipart/form-data'>
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md">
+                        <label for="">Doctor Registration Number:</label>
+                        <input type="text" class="form-control shadow-main-color" name="registration_number" placeholder="Doctor Registration Number...">
+                    </div>
+                    <div class="col-md">
+                        <label for="">Doctor Credentials: </label>
+                        <input type="file" name="doctor_credentials" id="" class="form-control shadow-main-color">
+
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md">
+                        <label for="">Full Name: </label>
+                        <input type="text" class="form-control shadow-main-color" name="name" placeholder="Insert your full name">
+                    </div>
+                    <div class="col-md">
+                        <label for="">Post Code: </label>
+                        <input type="text" name="postcode" id="" class="form-control shadow-main-color">
+
+                    </div>
+                </div>
+                <br>
+                <label for="">Address 1:</label>
+                <input type="text" name="address1" id="" class="form-control shadow-main-color" placeholder="Apt/number ...">
+                <br>
+                <div class="row">
+                    <div class="col-md">
+                        <label for="">Address 2:</label>
+                        <input type="text" class="form-control shadow-main-color" name="address2" placeholder="street name">
+                    </div>
+                </div>
+                <br>
+                <label for="">Id:</label>
+                <input type="file" name="photo_id" id="" class="form-control shadow-main-color">
+                <br>
+                <label for="">Profile Photo:</label>
+                <input type="file" name="profile_photo" id="" class="form-control shadow-main-color">
+                <br>
+                <label for="">Doctor Specialty:</label>
+                <select name="speciality" class="form-select" id="">
+                    {% for speciality in specialities %}
+                        <option value="{{speciality.id}}">{{speciality.specialities}}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <label for="">Description:</label>
+                <textarea name="description" class="form-control shadow-main-color"></textarea>
+                <br>
+                <label for="">Price: </label>
+                <input type="number" name="price" class="form-control shadow-main-color">
+                <br>
+                <input type="submit" value="Register" class="btn btn-success btn-dark-color">
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+
+</div>
+
+{% endblock 'body' %}

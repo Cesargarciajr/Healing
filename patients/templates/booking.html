@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block 'head' %}
+
+    <link rel="stylesheet" href="{% static 'doctors/css/schedule.css' %}">
+    <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+    <link rel="stylesheet" href="{% static 'doctors/css/doctor_registration.css' %}">
+    <link rel="stylesheet" href="{% static 'patients/css/home.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+{% endblock 'head' %}
+
+
+{% block 'body' %}
+
+{% include "partials/navbar.html" %}
+
+    <div class="container">
+        <br><br>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-3"><img src="{{doctor.profile_photo.url}}" class="profile-photo-card" alt=""></div>
+                    <div class="col-md">
+                        <p style="font-size: 20px" class="p-bold">Dr  {{doctor.name}}<i class="bi bi-patch-check-fill icon-main"></i></p>
+                        <p>{{doctor.description}}</p>
+                    </div>
+                </div> 
+                <br>
+                {% if messages %}
+                    <br>
+                    {% for message in messages %}
+                        <section class="alert {{message.tags}}">
+                            {{message}}
+                        </section>
+                    {% endfor %}
+                {% endif %}
+                <hr>
+                <div class="row">
+                    {% for booking in schedule %}
+                        <div class="col-md-3">
+                            <a class="link" href="{% url 'appointment' booking.id %}">
+                                <div class='select-day'>
+                                    <div class="header-days">
+                                        <span class="month">
+                                            {{ booking.date|date:"F" }}
+                                        </span>
+                                        <span class="week-days">
+                                            {{ booking.date|date:"l" }}
+                                        </span>
+                                    </div>
+                                    <div class="date-content">
+                                        {{ booking.date }}
+                                    </div>
+                                </div>
+                            </a>
+                            <br>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+
+    </div>
+{% endblock 'body' %}
